@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☣️ Cumpleaños: JuviaSc ☣️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            image-rendering: pixelated;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #game-box {
+            background-color: #181010;
+            border: 4px solid #e74c3c;
+            padding: 16px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 6px 6px 0px #000000;
+            text-align: center;
+            position: relative;
+            display: none;
+        }
+
+        #intro-screen {
+            background-color: #181010;
+            border: 4px solid #e74c3c;
+            padding: 24px;
+            max-width: 720px;
+            width: 100%;
+            box-shadow: 6px 6px 0 #000;
+            text-align: center;
+        }
+
+        .intro-badge {
+            color: #ff2a2a;
+            font-size: 11px;
+            line-height: 1.8;
+            text-shadow: 2px 2px #500000;
+            margin-bottom: 18px;
+        }
+
+        .stars-intro-logo {
+            width: 88px;
+            height: 88px;
+            object-fit: contain;
+            margin: 0 auto 12px;
+            display: block;
+        }
+
+        .stars-group-photo {
+            width: 100%;
+            max-height: 210px;
+            object-fit: cover;
+            object-position: center;
+            border: 2px solid #c084fc;
+            background: #09030f;
+            margin-bottom: 16px;
+        }
+
+        .intro-story {
+            background: #080808;
+            border: 2px solid #ffffff;
+            color: #ddd;
+            font-size: 7px;
+            line-height: 2;
+            padding: 18px;
+            text-align: left;
+            white-space: pre-line;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 11px;
+            color: #ff2a2a;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #500000;
+            line-height: 1.5;
+        }
+
+        .stats-dashboard {
+            background: #080808;
+            border: 2px solid #ffffff;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .stat-card {
+            background: #111;
+            padding: 10px;
+            border: 2px solid #ff2a2a;
+        }
+
+        .stat-card-title {
+            font-size: 8px;
+            color: #ff2a2a;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .juvia-hud-icon {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .stat-row {
+            font-size: 7px;
+            margin: 6px 0;
+            display: flex;
+            justify-content: space-between;
+            color: #fff;
+        }
+
+        .party-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .party-badge {
+            font-size: 6px;
+            padding: 4px 6px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #ff2a2a;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .team-progress-bar {
+            width: 100%;
+            background: #000;
+            height: 14px;
+            margin-top: 8px;
+            border: 2px solid #fff;
+            padding: 2px;
+        }
+
+        .team-progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #ff2a2a;
+            transition: width 0.2s;
+        }
+
+        canvas#gameCanvas {
+            background: #000000;
+            border: 4px solid #ffffff;
+            width: 100%;
+            height: 200px;
+            display: block;
+        }
+
+        .controls-panel {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            font-family: 'Press Start 2P', monospace, sans-serif;
+            font-size: 6px;
+            padding: 12px 6px;
+            background-color: #8b0000;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px #000000;
+            text-transform: uppercase;
+            line-height: 1.4;
+            transition: all 0.1s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #ff2a2a;
+        }
+
+        button:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000000;
+        }
+
+        button:disabled {
+            background-color: #444444 !important;
+            color: #888888 !important;
+            border-color: #666666 !important;
+            cursor: not-allowed !important;
+            opacity: 0.7;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: #0a0a0a;
+            border: 4px solid #ff2a2a;
+            padding: 20px;
+            max-width: 680px;
+            width: 92%;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 42, 42, 0.4);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 { 
+            font-size: 10px; 
+            color: #ff2a2a; 
+            margin-bottom: 15px; 
+            text-shadow: 2px 2px #000;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            text-align: left;
+        }
+
+        .achievement-card {
+            background: #111;
+            border: 2px solid #555;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+
+        .achievement-card.unlocked {
+            border-color: #f1c40f;
+            background: #1a1500;
+            opacity: 1;
+            box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
+        }
+
+        .achievement-icon {
+            font-size: 20px;
+        }
+
+        .achievement-info {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-size: 7px;
+            color: #f1c40f;
+            margin-bottom: 4px;
+        }
+
+        .achievement-desc {
+            font-size: 5px;
+            color: #aaa;
+            line-height: 1.4;
+        }
+
+        .btn-watch-video {
+            margin-top: 6px;
+            background: #27ae60;
+            font-size: 5px;
+            padding: 6px;
+            width: 100%;
+        }
+
+        .video-container {
+            width: 100%;
+            margin-top: 15px;
+            background: #000;
+            border: 2px solid #f1c40f;
+            padding: 5px;
+        }
+
+        video {
+            width: 100%;
+            max-height: 300px;
+            display: block;
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .note-card {
+            background: #111;
+            border: 2px solid #2ecc71;
+            padding: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .note-preview-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .interactive-img {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #f1c40f;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .note-title-box {
+            flex: 1;
+        }
+
+        .note-title {
+            font-size: 8px;
+            color: #f1c40f;
+            margin-bottom: 6px;
+        }
+
+        .hover-hint {
+            font-size: 5px;
+            color: #2ecc71;
+            margin-top: 4px;
+        }
+
+        .note-collapsible-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .note-card.active .note-collapsible-content {
+            display: block;
+            opacity: 1;
+        }
+
+        .note-text {
+            font-size: 6px;
+            color: #ddd;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            border-top: 1px dashed #444;
+            padding-top: 10px;
+        }
+
+        .dossier-card {
+            background: #111;
+            border: 2px solid #3498db;
+            padding: 12px;
+            display: flex;
+            gap: 14px;
+            text-align: left;
+            margin-bottom: 12px;
+        }
+
+        .dossier-photo {
+            width: 92px;
+            height: 92px;
+            object-fit: contain;
+            border: 2px solid #f1c40f;
+            background: #000;
+            flex: 0 0 auto;
+        }
+
+        .weapon-photo {
+            width: 145px;
+            height: 92px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            border: 2px solid #c084fc;
+            background: #09040f;
+            flex: 0 0 auto;
+        }
+
+        .dossier-story {
+            color: #ddd;
+            font-size: 6px;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .safe-dial-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .safe-digit-box {
+            background: #000;
+            border: 3px solid #f1c40f;
+            padding: 8px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .safe-digit-value {
+            font-size: 16px;
+            color: #f1c40f;
+            margin: 6px 0;
+        }
+
+        .safe-btn-arrow {
+            background: #222;
+            border: 1px solid #f1c40f;
+            color: #f1c40f;
+            padding: 4px 0;
+            font-size: 8px;
+            width: 100%;
+        }
+
+        .seq-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            background: #050505;
+            padding: 15px;
+            border: 2px solid #333;
+        }
+
+        .seq-node {
+            height: 50px;
+            background: #111;
+            border: 2px solid #555;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .seq-node.active {
+            border-color: #2ecc71;
+            color: #2ecc71;
+            background: #0a200a;
+            box-shadow: 0 0 8px #2ecc71;
+        }
+
+        .mixer-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+
+        .mixer-vial {
+            width: 50px;
+            height: 130px;
+            border: 3px solid #aaa;
+            border-top: none;
+            background: #111;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 2px;
+        }
+
+        .vial-segment {
+            width: 100%;
+            height: 18%;
+            margin-top: 2px;
+            background: #222;
+            transition: background 0.2s;
+        }
+
+        .vial-segment.active-red { background: #e74c3c; box-shadow: 0 0 6px #e74c3c; }
+        .vial-segment.active-blue { background: #3498db; box-shadow: 0 0 6px #3498db; }
+        .vial-segment.active-green { background: #2ecc71; box-shadow: 0 0 6px #2ecc71; }
+
+        .crt-screen {
+            background: #001100;
+            border: 3px solid #2ecc71;
+            padding: 15px;
+            box-shadow: inset 0 0 10px #00ff00;
+            margin-bottom: 15px;
+            text-align: left;
+            font-size: 7px;
+            color: #2ecc71;
+            line-height: 1.6;
+        }
+
+        .terminal-log {
+            height: 80px;
+            overflow-y: auto;
+            border-bottom: 1px dashed #2ecc71;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        #log-message {
+            margin-top: 12px;
+            font-size: 7px;
+            color: #ff2a2a;
+            min-height: 24px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 560px) {
+            body { padding: 8px; }
+            #game-box { padding: 10px; border-width: 3px; }
+            .stats-dashboard, .achievements-grid { grid-template-columns: 1fr; }
+            .controls-panel { grid-template-columns: 1fr; }
+            #btn-boss { grid-column: auto !important; }
+            .safe-dial-container { gap: 4px; }
+            .safe-digit-box { width: 23%; padding: 5px; }
+            .modal-content { padding: 12px; }
+            .dossier-card { flex-direction: column; }
+        }
+
+        /* Tema: Operación Umbra — negro y morado */
+        body { background-color: #07030d; color: #f3e8ff; }
+        #game-box, #intro-screen { background-color: #150a22; border-color: #a855f7; box-shadow: 6px 6px 0 #020104; }
+        h1, .intro-badge { color: #d8b4fe; text-shadow: 2px 2px #3b0764; }
+        .intro-story, .stats-dashboard { background: #0d0615; border-color: #c084fc; color: #eadcff; }
+        .stat-card, .achievement-card, .note-card, .dossier-card { background: #1b0d2a; border-color: #7e22ce; }
+        .stat-card-title, .note-title, .achievement-title, .hover-hint { color: #d8b4fe; }
+        .stat-row, .dossier-story, .note-text { color: #f3e8ff; }
+        #ui-coins, #ui-str, #ui-mag, #ui-def, #ui-health, #ui-power { color: #d8b4fe !important; }
+        .party-badge, .team-progress-bar, .safe-digit-box, .mixer-vial, .seq-grid { background: #09030f; border-color: #a855f7; }
+        .team-progress-fill { background-color: #a855f7; }
+        canvas#gameCanvas { background: #08030d; border-color: #d8b4fe; }
+        button, button[style] { background-color: #5b21b6 !important; color: #f3e8ff !important; border-color: #d8b4fe !important; }
+        button:hover:not(:disabled) { background-color: #9333ea !important; }
+        button:disabled { background-color: #2e173f !important; color: #8f7aa5 !important; border-color: #513367 !important; }
+        .modal { background: rgba(5, 1, 10, 0.96); }
+        .modal-content { background: #12081d; border-color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.45); }
+        .modal h2, #log-message { color: #d8b4fe; }
+        .achievement-card.unlocked { border-color: #d8b4fe; background: #2a1242; box-shadow: 0 0 8px rgba(216, 180, 254, 0.35); }
+        .interactive-img, .dossier-photo { border-color: #c084fc; }
+        .safe-btn-arrow, .seq-node { background: #211032; border-color: #a855f7; color: #d8b4fe; }
+        .seq-node.active { border-color: #d8b4fe; color: #f3e8ff; background: #3b1762; box-shadow: 0 0 8px #c084fc; }
+        .vial-segment.active-red { background: #7e22ce; box-shadow: 0 0 6px #7e22ce; }
+        .vial-segment.active-blue { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
+        .vial-segment.active-green { background: #d8b4fe; box-shadow: 0 0 6px #d8b4fe; }
+        .crt-screen { background: #130624; border-color: #a855f7; box-shadow: inset 0 0 10px #9333ea; color: #e9d5ff; }
+
+        /* Tipografía de terminal: más legible, sin perder el tono táctico. */
+        body, button, input, textarea {
+            font-family: 'Share Tech Mono', 'Courier New', monospace !important;
+        }
+        h1, .intro-badge { font-size: 17px; letter-spacing: 0.5px; }
+        .intro-story { font-size: 13px; line-height: 1.55; }
+        .stat-card-title { font-size: 13px; }
+        .stat-row { font-size: 12px; margin: 7px 0; }
+        .party-badge { font-size: 11px; padding: 5px 7px; }
+        button { font-size: 12px; padding: 11px 8px; line-height: 1.2; }
+        .modal h2 { font-size: 16px; line-height: 1.3; }
+        .achievement-title, .note-title { font-size: 12px; }
+        .achievement-desc, .hover-hint { font-size: 10px; line-height: 1.45; }
+        .note-text, .dossier-story { font-size: 12px; line-height: 1.55; }
+        #log-message { font-size: 12px; line-height: 1.4; min-height: 30px; }
+        .safe-btn-arrow { font-size: 13px; }
+        .safe-digit-value { font-size: 20px; }
+        .seq-node { font-size: 13px; }
+        .crt-screen { font-size: 12px; line-height: 1.45; }
+        #term-input { font-size: 16px !important; }
+    </style>
+</head>
+<body>
+
+<section id="intro-screen" aria-labelledby="intro-title">
+    <img src="assets/stars/logo/stars.png" class="stars-intro-logo" alt="Logo S.T.A.R.S.">
+    <div id="intro-title" class="intro-badge">☣️ ARCHIVO S.T.A.R.S. — JUVIASC ☣️</div>
+    <img src="assets/stars/grupo/starsgroup.webp" class="stars-group-photo" alt="Primer equipo S.T.A.R.S.">
+    <div class="intro-story">ARCHIVO CONFIDENCIAL — RACCOON CITY.
+
+JuviaSc nació en 1996. Desde muy joven aprendió que sobrevivir no era cuestión de suerte: era saber cuándo avanzar, cuándo cubrir a un aliado y cuándo hacer el último sacrificio por el equipo.
+
+Su determinación llamó la atención de S.T.A.R.S. y, tras completar el entrenamiento, se ganó un lugar junto al primer escuadrón de leyenda: Albert Wesker, Jill Valentine, Chris Redfield, Barry Burton, Rebecca Chambers y Brad Vickers. Con ellos aprendió a enfrentar el terror de Umbrella sin abandonar a nadie atrás.
+
+Han pasado años desde la caída de Raccoon City. Pero en 2026 una alerta imposible atravesó todos los canales de emergencia: Nemesis ha vuelto a la vida. Sus señales fueron detectadas entre las ruinas de la ciudad, donde nuevas criaturas bloquean los accesos y las antiguas puertas de seguridad se han cerrado otra vez.
+
+JuviaSc regresó para una misión personal. Sus nuevos reclutas quedaron atrapados en sectores distintos de Raccoon City. Ella los llama el escuadrón “Cartas de sacrificios”, porque cada integrante prometió dejar una marca, proteger al grupo y no rendirse aunque la misión pareciera perdida.
+
+Ahora debe recuperar armas, rescatar a cada Carta de sacrificio y reunir a su escuadrón antes de llegar a Nemesis. La ciudad ha despertado. La misión comienza de nuevo.</div>
+    <button id="btn-intro-music" onclick="toggleIntroMusic()">🎵 ACTIVAR TRANSMISIÓN AMBIENTAL</button>
+    <button id="btn-start-mission" onclick="startMission()" style="margin-top:10px;">▶ INICIAR MISIÓN DE RESCATE</button>
+</section>
+
+<div id="game-box">
+    <h1>☣️ CUMPLEAÑOS: JUVIASC ☣️</h1>
+    
+    <div class="stats-dashboard">
+        <div class="stat-card">
+            <div class="stat-card-title"><img src="assets/juvi/icon/juvi.png" class="juvia-hud-icon" alt="JuviaSc">ESTADO JUVIASC</div>
+            <div class="stat-row"><span>MUNICIÓN:</span> <span id="ui-coins" style="color: #f1c40f;">0 🔫</span></div>
+            <div class="stat-row"><span>POTENCIA:</span> <span id="ui-str" style="color: #ff2a2a;">10</span></div>
+            <div class="stat-row"><span>TÁCTICA:</span> <span id="ui-mag" style="color: #3498db;">10</span></div>
+            <div class="stat-row"><span>BLINDAJE:</span> <span id="ui-def" style="color: #2ecc71;">10</span></div>
+            <div class="stat-row"><span>SALUD:</span> <span id="ui-health" style="color: #2ecc71;">100/100</span></div>
+            <div class="stat-row"><span>AMENAZA:</span> <span id="ui-power" style="color: #e74c3c;">10%</span></div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-title">👥 S.T.A.R.S. (<span id="ui-friends-count">0</span>/8)</div>
+            <div class="party-list" id="party-list">
+                <span style="font-size: 6px; color: #888;">¡RESCATA AL ESCUADRÓN!</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 6px; color: #aaa;">LISTO PARA COMBATE:</div>
+            <div class="team-progress-bar">
+                <div id="team-fill" class="team-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas" width="810" height="200"></canvas>
+
+    <div id="log-message">NEMESIS BLOQUEA LA SALIDA. RESUELVE ACERTIJOS TÁCTICOS PARA OBTENER MUNICIÓN Y RECLUTAR ALIADOS.</div>
+
+    <div class="controls-panel">
+        <button id="btn-notes" style="background-color: #2980b9;">📂 NOTAS</button>
+        <button id="btn-puzzle">🧩 ACERTIJO</button>
+        <button id="btn-buy">🤝 RECLUTAR</button>
+        <button id="btn-dossiers" style="background-color: #34495e;">🗃️ EXPEDIENTES</button>
+        <button id="btn-weapons" style="background-color: #6d28d9;">🔫 ARMAS</button>
+        <button id="btn-boss" style="background-color: #b30000;">☣️ COMBATIR</button>
+        <button id="btn-pets" style="background-color: #7e22ce;">🐾 MASCOTAS</button>
+        <button id="btn-keys" style="background-color: #6d28d9;">🔑 LLAVES</button>
+        <button id="btn-door" style="background-color: #4c1d95;">🚪 ABRIR PUERTA</button>
+        <button id="btn-enemies" style="background-color: #4c1d95;">☣️ ENEMIGOS</button>
+        <button id="btn-achievements" style="background-color: #f39c12; color: #000;">🏆 LOGROS</button>
+        <button id="btn-first-stars" style="background-color: #3b0764;">⭐ PRIMEROS S.T.A.R.S.</button>
+    </div>
+</div>
+
+<div id="puzzleModal" class="modal">
+    <div class="modal-content">
+        <h2 id="puzzle-title">TERMINAL UMBRELLA</h2>
+        <div id="puzzle-body"></div>
+    </div>
+</div>
+
+<script>
+let coins = 0;
+let friendsUnlocked = 0;
+const maxFriends = 8;
+let isVictory = false;
+let playerHealth = 100;
+let healingSprays = 0;
+let healingHerbs = 0;
+let currentEnemyEngaged = false;
+const keysObtained = new Set();
+const openedDoors = new Set();
+
+let canvas, ctx;
+let playerX = 55;
+let frameCount = 0;
+let audioCtx = null;
+let introMusicTimer = null;
+let introMusicPlaying = false;
+
+let safeTarget = [], safeCurrent = [0, 0, 0, 0];
+let seqTarget = [], seqCurrent = [];
+let vialReds = 0, vialBlues = 0, vialGreens = 0, vialTarget = [];
+let hackTarget = "", hackAttempts = 4;
+let activeFriendIndex = null;
+let gameStarted = false;
+const solvedPuzzles = new Set();
+const lockedTerminals = new Set();
+
+// 🖼️ CONFIGURACIÓN DE IMÁGENES (PUEDES REEMPLAZAR LOS LINKS O RUTAS LOCALES)
+const juviaImg = new Image();
+juviaImg.src = "assets/juvi/avatar/juvi.png";
+const kisekiImg = new Image();
+kisekiImg.src = "assets/mascotas/kiseki.png";
+const nyuImg = new Image();
+nyuImg.src = "assets/mascotas/nyu.png";
+
+const friendsList = [
+    { 
+        name: "Geris", color: "#a855f7", statName: "+15 POTENCIA", str: 15, mag: 0, def: 5, puzzle: "safe", safeCode: [4, 9, 2, 7],
+        photoUrl: "assets/aliados/transparent/icon/gera.png", avatarUrl: "assets/aliados/transparent/avatar/gera.png",
+        achievementTitle: "🏆 RESCATE: GERIS",
+        achievementDesc: "Desbloqueado al reclutar a Geris tras resolver la caja fuerte RPD.",
+        videoUrl: "assets/videos/gera.mp4",
+        noteTitle: "📄 Diario de Geris - Oficina RPD (Sector Oeste)",
+        noteText: "28 de Septiembre.\nEl RPD dejó de sonar como una estación de policía cuando las primeras alarmas se apagaron. Escuché pasos en el pasillo principal y pensé en los agentes que regresarían buscando munición, por eso escondí la reserva en la caja fuerte del escritorio.\n\nNo escribí los números para que cualquiera los leyera. Dejé la combinación en el orden de los cuatro discos: primero, dos por dos; después, tres grupos de tres; luego, diez menos ocho; y al final, los días de una semana.\n\nSi encuentras esta nota, significa que todavía queda alguien dispuesto a resistir. Usa la reserva para abrir una salida, no para quedarte solo."
+    },
+    { 
+        name: "Choco", color: "#c084fc", statName: "+15 TÁCTICA", str: 0, mag: 15, def: 5, puzzle: "sequence", seqPattern: [3, 1, 5, 2],
+        photoUrl: "assets/aliados/transparent/icon/choco.png", avatarUrl: "assets/aliados/transparent/avatar/choco.png",
+        achievementTitle: "🏆 RESCATE: CHOCO",
+        achievementDesc: "Desbloqueado al reclutar a Choco tras restablecer la Subestación.",
+        videoUrl: "assets/videos/choco.mp4",
+        noteTitle: "📝 Reporte de Choco - Subestación Eléctrica",
+        noteText: "La subestación quedó a oscuras cuando Umbrella cortó la alimentación del sector. Durante horas intenté mantener la puerta activa mientras los golpes de las criaturas resonaban del otro lado de los transformadores.\n\nEl panel solo acepta un reinicio exacto: primero activa el tercer interruptor, después el primero, luego el quinto y al final el segundo. Ese orden distribuye la carga sin quemar los fusibles.\n\nNo tengas prisa. Si se altera una fase, el sistema corta la corriente y obliga a comenzar de nuevo."
+    },
+    { 
+        name: "Are", color: "#9333ea", statName: "+15 BLINDAJE", str: 5, mag: 0, def: 15, puzzle: "vial", vialReq: [3, 1, 2],
+        photoUrl: "assets/aliados/transparent/icon/are.png", avatarUrl: "assets/aliados/transparent/avatar/are.png",
+        achievementTitle: "🏆 RESCATE: ARE",
+        achievementDesc: "Desbloqueado al reclutar a Are tras sintetizar la vacuna Nest.",
+        letter: "Bueno, no sé por dónde empezar esto, supongo que lo principal es decir Feliz Cumpleaños espero que este como todos los anteriores haya sido especial y que la hayas pasado bien, en compañía de la familia, ya sabes que aunque no lo decimos mucho, te quiero como a una hermana y espero seguir teniendo la dicha de tenerte conmigo muchos años más, riendo, compartiendo y disfrutando de este camino de la vida, no te digo que será fácil pero siempre voy a estar allí para cualquier cosa que necesites, sea para hablar, para reír, para llorar, no dudes que siempre te voy a desear todo lo bueno en esta vida, porque yo sé que te lo mereces, y aunque personas envidiosas rondando no dejes que apaguen nunca la luz que siempre le brindas a las personas, a la familia y a la vida. Siempre recuerda que eres especial y nunca dejes de sonreír porque es lo que te hace especial, de nuevo feliz cumpleaños, te quiero mucho nunca lo olvides, en mis pensamientos siempre andas ocupando un lugar especial.",
+        noteTitle: "🧪 Cuaderno de Are - Laboratorio Nest",
+        noteText: "Bitácora del sintetizador químico.\nCuando el laboratorio empezó a temblar, pensé en abandonar las muestras. Entonces vi los nombres de quienes esperaban un tratamiento en la sala de al lado y decidí terminar la fórmula aunque fuera la última persona dentro de NEST.\n\nEl blindaje se prepara con tres dosis rojas, una azul y dos verdes. El rojo sostiene la fórmula, el azul inicia la reacción y el verde la equilibra.\n\nNo alteres las cantidades: una mezcla inestable arruina la vacuna y desperdicia la oportunidad de proteger al escuadrón."
+    },
+    { 
+        name: "Fernando", color: "#7e22ce", statName: "+15 FUERZA", str: 15, mag: 5, def: 0, puzzle: "terminal", termWord: "VIRUS",
+        photoUrl: "assets/aliados/transparent/icon/fernando.png", avatarUrl: "assets/aliados/transparent/avatar/fernando.png",
+        achievementTitle: "🏆 RESCATE: FERNANDO",
+        achievementDesc: "Desbloqueado al reclutar a Fernando tras hackear la terminal.",
+        videoUrl: "assets/videos/fernando.mp4",
+        noteTitle: "💻 Nota de Hacking de Fernando - Centro de Seguridad",
+        noteText: "Registro de intrusión.\nIntercepté una señal antes de que el centro de seguridad se quedara sin energía. Las cámaras mostraban puertas cerrándose una tras otra y, entre los archivos de Umbrella, apareció la clave de emergencia para abrir el siguiente sector.\n\nLa terminal pide el nombre de cinco letras del agente biológico que inició el brote: VIRUS. No escribas el nombre de Umbrella ni el de Raccoon City; la contraseña es el origen de la infección.\n\nSi esta consola responde, quizá todavía podamos guiar a JuviaSc por una ruta que no esté vigilada."
+    },
+    { 
+        name: "Ian", color: "#d8b4fe", statName: "+15 APOYO", str: 5, mag: 15, def: 0, puzzle: "safe", safeCode: [6, 3, 9, 1],
+        photoUrl: "assets/aliados/transparent/icon/ian.png", avatarUrl: "assets/aliados/transparent/avatar/ian.png",
+        achievementTitle: "🏆 RESCATE: IAN",
+        achievementDesc: "Desbloqueado al reclutar a Ian tras descifrar la armería S.T.A.R.S.",
+        videoUrl: "assets/videos/ian.mp4",
+        noteTitle: "📄 Transmisión Cifrada de Ian - Armería S.T.A.R.S.",
+        noteText: "Caja B de pertrechos S.T.A.R.S.\nEl sonido de la armería cerrándose fue lo último que escuché antes de que el edificio quedara aislado. No podía permitir que las armas llegaran a quien quisiera usarlas contra los supervivientes, así que dejé la combinación codificada para el equipo.\n\nLas cuatro posiciones se obtienen en este orden: tres por dos, nueve entre tres, tres por tres y cinco menos cuatro.\n\nLa caja contiene recursos para quien aún pueda defender la armería y cubrir la retirada de los demás."
+    },
+    { 
+        name: "Madara", color: "#6d28d9", statName: "+20 SIGILO", str: 10, mag: 10, def: 5, puzzle: "sequence", seqPattern: [6, 4, 1, 3, 5],
+        photoUrl: "assets/aliados/transparent/icon/madara.png", avatarUrl: "assets/aliados/transparent/avatar/madara.png",
+        achievementTitle: "🏆 RESCATE: MADARA",
+        achievementDesc: "Desbloqueado al reclutar a Madara en la Torre del Reloj.",
+        videoUrl: "assets/videos/madara.mp4",
+        noteTitle: "📝 Manifiesto de Madara - Torre del Reloj",
+        noteText: "Manifiesto de la Torre del Reloj.\nDesde arriba pude ver las calles de Raccoon City vacías, salvo por las luces de emergencia y las sombras que se movían entre ellas. La torre aún conserva un sistema de alarma capaz de atraer a todas las criaturas del distrito.\n\nLa alarma se desactiva siguiendo las cinco fases de las campanas: SW-6, SW-4, SW-1, SW-3 y SW-5.\n\nCada fase debe completarse en ese orden. Un error reinicia la torre y vuelve a anunciar nuestra posición."
+    },
+    { 
+        name: "Geolit", color: "#e9d5ff", statName: "+20 TÁCTICA", str: 5, mag: 20, def: 0, puzzle: "vial", vialReq: [1, 4, 3],
+        photoUrl: "assets/aliados/transparent/icon/geolit.png", avatarUrl: "assets/aliados/transparent/avatar/geolit.png",
+        achievementTitle: "🏆 RESCATE: GEOLIT",
+        achievementDesc: "Desbloqueado al reclutar a Geolit en la Sala Médica.",
+        videoUrl: "assets/videos/geolit.mp4",
+        noteTitle: "🧪 Informe Médico de Geolit - Sala de Tratamientos",
+        noteText: "Informe médico de la Sala de Tratamientos.\nLa sala se convirtió en refugio cuando los heridos empezaron a llegar sin que nadie pudiera explicar qué había pasado fuera. Trabajé con lo que quedaba de los suministros y guardé una fórmula de combate para quien tuviera que cruzar las zonas contaminadas.\n\nEl suero usa una dosis roja, cuatro azules y tres verdes. Esa proporción permite que el compuesto conserve su efecto fuera del laboratorio.\n\nCualquier cambio en la mezcla vuelve inútil el tratamiento, así que prepara cada color con cuidado."
+    },
+    { 
+        name: "Yuyi", color: "#581c87", statName: "+25 FUERZA", str: 20, mag: 5, def: 10, puzzle: "terminal", termWord: "HYDRA",
+        photoUrl: "assets/aliados/transparent/icon/yuyi.png", avatarUrl: "assets/aliados/transparent/avatar/yuyi.png",
+        achievementTitle: "🏆 RESCATE: YUYI",
+        achievementDesc: "Desbloqueado al reclutar a Yuyi y activar el Arsenal Pesado.",
+        videoUrl: "assets/videos/yuyi.mp4",
+        noteTitle: "💻 Registro Maestro de Yuyi - Servidor Central",
+        noteText: "Registro maestro del servidor central.\nLas últimas transmisiones confirmaron lo que nadie quería escuchar: Nemesis sigue vivo. Me quedé en el servidor central para proteger el arsenal pesado hasta que JuviaSc pudiera llegar, porque el lanzacohetes no debía caer en manos de Umbrella.\n\nLa clave del arsenal pesado es HYDRA, la bestia mitológica de múltiples cabezas que Hércules enfrentó.\n\nCon esa contraseña se abre el acceso al lanzacohetes destinado a la batalla final. Si estás leyendo esto, el escuadrón ya está listo para terminar la misión."
+    }
+];
+
+// Ruta de campaña: cada aliado desbloquea el arma necesaria para abrir la siguiente puerta.
+const enemyStages = [
+    { enemy: "HORDA ZOMBI", door: "PUERTA OESTE RPD", key: "LLAVE DEL ALA OESTE", weapon: "BERETTA 92FS", weaponUrl: "assets/armas/beretta92fs.png", health: 70, damage: 10, ammo: 7, color: "#6d28d9", iconUrl: "assets/enemigos/transparent/icon/zombie.png", avatarUrl: "assets/enemigos/transparent/avatar/zombie.png", mirrorToFaceJuvi: true },
+    { enemy: "CERBERUS", door: "REJA DEL PATIO RPD", key: "LLAVE DEL PATIO", weapon: "ESCOPETA M3", weaponUrl: "assets/armas/escopetam3.png", health: 90, damage: 15, ammo: 6, color: "#7e22ce", iconUrl: "assets/enemigos/transparent/icon/cerbero.png", avatarUrl: "assets/enemigos/transparent/avatar/cerbero.png", mirrorToFaceJuvi: true },
+    { enemy: "LICKER", door: "PUERTA DE LA SUBESTACIÓN", key: "LLAVE DE SUBESTACIÓN", weapon: "LANZAGRANADAS", weaponUrl: "assets/armas/lanzagranadas.png", health: 110, damage: 22, ammo: 5, color: "#9333ea", iconUrl: "assets/enemigos/transparent/icon/licker.png", avatarUrl: "assets/enemigos/transparent/avatar/licker.png", mirrorToFaceJuvi: false },
+    { enemy: "HUNTER Γ", door: "COMPUERTA DEL ALCANTARILLADO", key: "LLAVE DEL ALCANTARILLADO", weapon: "MAGNUM LIGHTNING HAWK", weaponUrl: "assets/armas/magnum.png", health: 130, damage: 26, ammo: 5, color: "#5b21b6", iconUrl: "assets/enemigos/transparent/icon/haunter.png", avatarUrl: "assets/enemigos/transparent/avatar/haunter.png", mirrorToFaceJuvi: false },
+    { enemy: "DRAIN DEIMOS", door: "ACCESO DEL HOSPITAL", key: "LLAVE DEL HOSPITAL", weapon: "MINE THROWER", weaponUrl: "assets/armas/minethrower.png", health: 150, damage: 25, ammo: 6, color: "#4c1d95", iconUrl: "assets/enemigos/transparent/icon/drain.png", avatarUrl: "assets/enemigos/transparent/avatar/drain.png", mirrorToFaceJuvi: false },
+    { enemy: "G-BIRKIN", door: "PUERTA BLINDADA NEST", key: "TARJETA DE ACCESO NEST", weapon: "MAC-11", weaponUrl: "assets/armas/mac11.png", health: 180, damage: 20, ammo: 9, color: "#581c87", iconUrl: "assets/enemigos/transparent/icon/william.png", avatarUrl: "assets/enemigos/transparent/avatar/william.png", mirrorToFaceJuvi: false },
+    { enemy: "MISTER X", door: "PERSIANA DE DEAD FACTORY", key: "LLAVE DE DEAD FACTORY", weapon: "LANZALLAMAS", weaponUrl: "assets/armas/lanzallamas.png", health: 210, damage: 30, ammo: 7, color: "#3b0764", iconUrl: "assets/enemigos/transparent/icon/misterx.png", avatarUrl: "assets/enemigos/transparent/avatar/misterx.png", mirrorToFaceJuvi: false },
+    { enemy: "NEMESIS T-TYPE", door: "SALIDA DE EMERGENCIA NEST 2", key: "LLAVE DE EVACUACIÓN NEST 2", weapon: "LANZACOHETES", weaponUrl: "assets/armas/lanacohetes.png", health: 260, damage: 130, ammo: 2, color: "#1e102b", iconUrl: "assets/enemigos/transparent/icon/nemesis.png", avatarUrl: "assets/enemigos/transparent/avatar/nemesis.png", mirrorToFaceJuvi: false }
+];
+
+const recruitmentDossiers = [
+    "GERIS — PRIMERA CARTA DE SACRIFICIO.\nAntes del regreso de Umbrella, Geris llevaba una vida tranquila y dedicaba su tiempo a reparar equipos, aprender rutas de la ciudad y ayudar a quien se quedara varado. No soñaba con ser soldado; le bastaba con ser la persona que encontraba una solución cuando los demás ya no la veían.\n\nConoció a JuviaSc en un corredor del RPD, mientras protegía una ruta de evacuación con su última munición. JuviaSc no le pidió una demostración de fuerza: vio que había decidido quedarse para salvar desconocidos. Después de escapar juntos, Geris aceptó ser la primera Carta de sacrificio. Ahora es el punto firme del escuadrón: quien sostiene la línea y recuerda por qué nadie debe quedarse atrás.",
+    "CHOCO — ESPECIALISTA DE ENERGÍA.\nChoco creció entre tableros eléctricos, cables y motores. Antes de la misión trabajaba reparando sistemas que casi nadie notaba, pero que mantenían vivos edificios enteros. Su paciencia se convirtió en una forma de valentía: aprendió a resolver fallas sin entrar en pánico, incluso cuando todo a su alrededor se apagaba.\n\nDurante el colapso de la subestación, JuviaSc encontró a Choco manteniendo activas las puertas de seguridad mientras las criaturas rodeaban el lugar. Ella cubrió su salida; él restableció el camino. Tras aquella noche entendieron que sus habilidades se complementaban. Choco se unió a Cartas de sacrificios como táctico de energía, decidido a abrir cada puerta que intente separar a JuviaSc de su gente.",
+    "ARE — MÉDICA DE CAMPO.\nAre siempre tuvo la costumbre de cuidar a los demás antes de pensar en sí misma. Antes de Raccoon City estudiaba métodos de curación, mezclas y primeros auxilios, convencida de que una respuesta a tiempo puede cambiar una vida. Esa convicción la llevó a permanecer en NEST cuando muchos ya habían huido.\n\nJuviaSc la conoció cuando la síntesis médica estaba a punto de colapsar. En vez de abandonar las muestras, Are intentaba salvar una posible cura y a los supervivientes atrapados junto a ella. JuviaSc protegió el laboratorio hasta que Are terminó el procedimiento. Desde entonces, Are se unió al escuadrón como su corazón médico: una Carta de sacrificio que recuerda al grupo que sobrevivir también significa conservar la esperanza.",
+    "FERNANDO — OPERADOR DE SEGURIDAD.\nAntes de la crisis, Fernando era el tipo de persona que entendía un sistema observándolo unos minutos. Le interesaban las redes, los códigos y todo aquello que funcionaba detrás de una puerta cerrada. Cuando Umbrella aisló la ciudad, utilizó ese conocimiento para interceptar señales y descubrir rutas que no figuraban en ningún mapa.\n\nJuviaSc llegó a un terminal abandonado siguiendo una transmisión incompleta. Encontró a Fernando defendiendo la consola que podía revelar las rutas de evacuación. Ella confió en su lectura del peligro y Fernando comprobó que podía confiar en su liderazgo. Al integrarse a Cartas de sacrificios se convirtió en responsable de inteligencia: el aliado que escucha la ciudad, descifra sus secretos y encuentra una salida donde parece no haber ninguna.",
+    "IAN — GUARDIÁN DE LA ARMERÍA.\nIan pasó años aprendiendo a respetar cada pieza de equipo. Para él, un arma nunca fue un trofeo: era una promesa de protección para quien no podía defenderse. Antes de la misión organizaba suministros y reparaba mecanismos, con la idea de que estar preparado podía evitar una tragedia.\n\nCuando el RPD cayó, Ian se encerró en la armería para impedir que los recursos terminaran en manos equivocadas. JuviaSc lo encontró cansado, pero aún dispuesto a custodiar las reservas. Ella no le pidió rendirse, sino acompañarla y usar ese compromiso para proteger a más personas. Ian aceptó y pasó a ser la Carta de sacrificio encargada del arsenal, manteniendo al equipo equipado para cada nueva puerta y cada nueva amenaza.",
+    "MADARA — EXPLORADOR DE LA TORRE DEL RELOJ.\nMadara siempre prefirió observar antes de actuar. Conocía callejones, azoteas y pasadizos de Raccoon City porque durante años recorrió la ciudad buscando lugares que otros ignoraban. Esa costumbre le enseñó a leer el silencio, anticipar el peligro y encontrar rutas seguras sin llamar la atención.\n\nJuviaSc lo vio por primera vez guiando a un grupo de civiles por la Torre del Reloj, evitando alarmas y hordas con una calma impresionante. Ella cubrió el último tramo; Madara abrió el camino. Tras aquella evacuación decidió unirse a Cartas de sacrificios como explorador. Su trabajo es ir delante del grupo, detectar amenazas y asegurar que JuviaSc nunca entre a una zona sin una ruta de regreso.",
+    "GEOLIT — MÉDICO DE COMBATE.\nGeolit había dedicado su vida a aprender cómo mantener a alguien de pie cuando todo parecía perdido. Antes del desastre atendía emergencias sin buscar reconocimiento; para él, cada paciente era una historia que merecía continuar. Esa forma de pensar se volvió esencial cuando la ciudad quedó aislada.\n\nJuviaSc encontró su sala de tratamientos convertida en refugio. Geolit atendía heridos con recursos mínimos y se negaba a cerrar la puerta a nadie. Al conocer el plan de rescate de JuviaSc, entendió que el escuadrón necesitaba más que armas: necesitaba alguien que protegiera su futuro. Se incorporó a Cartas de sacrificios como médico de combate, llevando consigo la promesa de que nadie luchará solo mientras él pueda ayudar.",
+    "YUYI — GUARDIÁN DEL ARSENAL PESADO.\nAntes de la misión, Yuyi tenía fama de ser reservado, pero siempre estaba presente cuando alguien necesitaba apoyo. Conocía los sistemas del servidor central y comprendía la responsabilidad que implicaba controlar equipo capaz de cambiar una batalla. Cuando comenzaron las señales de Nemesis, fue de los pocos que no huyeron.\n\nJuviaSc llegó al arsenal siguiendo una pista sobre el lanzacohetes. Yuyi protegía el acceso, no por desconfianza, sino porque sabía que la última arma debía quedar en manos de alguien capaz de usarla para salvar y no para destruir. Al ver la determinación de JuviaSc, le entregó el arsenal y se unió a Cartas de sacrificios. Es la última línea del equipo y la persona que confía en JuviaSc para terminar la misión."
+];
+const enemyReports = [
+    "Una horda que bloqueaba la Puerta Oeste del RPD. La Beretta 92FS abrió el primer paso para el escuadrón.",
+    "Depredador canino liberado en el patio del RPD. La Escopeta M3 permitió asegurar la reja de salida.",
+    "Mutación veloz y letal de los laboratorios Umbrella. El Lanzagranadas despejó el acceso de la subestación.",
+    "Bioarma anfibia que custodiaba las compuertas del alcantarillado. La Magnum Lightning Hawk detuvo su avance.",
+    "Criatura parasitaria detectada cerca del hospital. El Mine Thrower neutralizó su nido antes de que se extendiera.",
+    "La forma mutada de G-Birkin defendía el laboratorio NEST. La MAC-11 abrió la puerta blindada.",
+    "Mister X bloqueó el paso en Dead Factory con una persecución implacable. El Lanzallamas fue necesario para detener su avance antes del combate final.",
+    "La bioarma final de Umbrella. Nemesis cayó ante el Lanzacohetes y la fuerza reunida de Cartas de sacrificios."
+];
+const firstStarsRecords = [
+    {
+        name: "ALBERT WESKER",
+        role: "CAPITÁN DEL EQUIPO ALFA",
+        iconUrl: "assets/stars/icon/wesker.png",
+        text: "Wesker conoció a JuviaSc durante una evaluación de campo. No le impresionaron las palabras, sino su forma de leer una sala, calcular riesgos y actuar sin perder tiempo. La incluyó en los entrenamientos del grupo porque detectó en ella una disciplina poco común.\n\nFELICITACIÓN: “Has superado otra misión complicada con precisión. Conserva esa determinación, JuviaSc; los resultados siguen demostrando que tu lugar está entre los mejores. Feliz cumpleaños.”"
+    },
+    {
+        name: "JILL VALENTINE",
+        role: "ESPECIALISTA EN CERRADURAS Y RESCATE",
+        iconUrl: "assets/stars/icon/jill.png",
+        text: "Jill conoció a JuviaSc al ayudarla a abrir una salida bloqueada durante una práctica de rescate. Lo que comenzó como una lección de mecanismos terminó siendo una amistad construida en confianza: Jill vio que JuviaSc siempre preguntaba primero por las personas atrapadas.\n\nFELICITACIÓN: “Nunca has dejado que el miedo decida por ti, y eso inspira a quienes luchan a tu lado. Espero que este cumpleaños te recuerde cuánto te aprecia tu gente. Disfrútalo, te lo ganaste.”"
+    },
+    {
+        name: "CHRIS REDFIELD",
+        role: "PUNTO DE ATAQUE DEL EQUIPO ALFA",
+        iconUrl: "assets/stars/icon/chris.png",
+        text: "Chris conoció a JuviaSc en el campo de tiro. Ella no buscaba competir con nadie; quería mejorar para poder proteger al equipo. Esa mentalidad hizo que Chris la tratara como compañera desde el primer día, y juntos aprendieron que la fuerza solo importa cuando se usa para cubrir a los demás.\n\nFELICITACIÓN: “Has mantenido unido a tu escuadrón incluso cuando las cosas se pusieron difíciles. Sigue confiando en ti y en las personas que elegiste cuidar. Feliz cumpleaños, compañera.”"
+    },
+    {
+        name: "BARRY BURTON",
+        role: "SOPORTE DE ARMAS PESADAS",
+        iconUrl: "assets/stars/icon/barry.png",
+        text: "Barry se cruzó con JuviaSc mientras ella ayudaba a ordenar suministros antes de una salida. Le enseñó que un equipo preparado no depende solo de las armas grandes, sino de recordar para quién se vuelve a casa. Desde entonces la vio como parte de la familia S.T.A.R.S.\n\nFELICITACIÓN: “Hoy deja descansar la misión un momento y celebra con los tuyos. Tienes un gran corazón y un equipo que cree en ti. Que nunca te falten razones para sonreír. Feliz cumpleaños, JuviaSc.”"
+    },
+    {
+        name: "REBECCA CHAMBERS",
+        role: "MÉDICA Y QUÍMICA DEL EQUIPO BRAVO",
+        iconUrl: "assets/stars/icon/rebecca.png",
+        text: "Rebecca conoció a JuviaSc en la enfermería, cuando JuviaSc decidió quedarse para ayudar a clasificar suministros médicos en vez de irse a descansar. Rebecca descubrió una amiga paciente, curiosa y dispuesta a escuchar incluso en las noches más largas.\n\nFELICITACIÓN: “Me alegra que sigas encontrando luz en medio de tantas misiones. Cuida también de ti, ¿sí? Mereces un cumpleaños tranquilo, lleno de cariño y de nuevos recuerdos bonitos.”"
+    },
+    {
+        name: "BRAD VICKERS",
+        role: "PILOTO DE S.T.A.R.S.",
+        text: "Brad conoció a JuviaSc antes de un vuelo de reconocimiento. Ella notó sus nervios, pero no se burló: revisó la ruta con él y le recordó que pedir apoyo también es una forma de valentía. Brad nunca olvidó ese gesto.\n\nFELICITACIÓN: “No siempre sé qué decir en momentos importantes, pero sí sé que eres una persona increíble. Gracias por hacer sentir más valientes a los demás. Feliz cumpleaños; que esta nueva vuelta te lleve muy alto.”"
+    }
+];
+let enemyStage = 0;
+let enemyHealth = enemyStages[0].health;
+const weaponsUnlocked = new Set();
+const defeatedEnemies = new Set();
+const keyAssetUrls = [
+    'assets/llaves/llavecorazon.png',
+    'assets/llaves/llavetrebol.png',
+    'assets/llaves/llavepica.png',
+    'assets/llaves/llaverombo.png'
+];
+
+enemyStages.forEach((enemy, index) => {
+    enemy.ammoRemaining = 0;
+    enemy.keyUrl = keyAssetUrls[index % keyAssetUrls.length];
+    enemy.keyObj = new Image();
+    enemy.keyObj.src = enemy.keyUrl;
+    if (!enemy.avatarUrl) return;
+    enemy.avatarObj = new Image();
+    enemy.avatarObj.src = enemy.avatarUrl;
+});
+
+// Cargar objetos de imagen para cada aliado dinámicamente
+friendsList.forEach(f => {
+    f.avatarObj = new Image();
+    f.avatarObj.src = f.avatarUrl || f.photoUrl;
+});
+
+const rain = Array.from({ length: 40 }, () => ({
+    x: Math.random() * 810, y: Math.random() * 200, length: Math.random() * 8 + 4, speed: Math.random() * 6 + 4
+}));
+
+function startMission() {
+    if (gameStarted) return;
+    gameStarted = true;
+    stopIntroMusic();
+    document.getElementById('intro-screen').style.display = 'none';
+    document.getElementById('game-box').style.display = 'block';
+    initAudio();
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d');
+    updateUI();
+    drawGame();
+}
+
+function initAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(freq, type, duration) {
+    try {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type; 
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain); 
+        gain.connect(audioCtx.destination);
+        osc.start(); 
+        osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+}
+
+function playIntroAmbientLoop() {
+    if (!audioCtx || !introMusicPlaying) return;
+    const notes = [73.42, 82.41, 65.41, 77.78];
+    const startTime = audioCtx.currentTime;
+    notes.forEach((freq, index) => {
+        const oscillator = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        oscillator.type = index % 2 === 0 ? 'triangle' : 'sine';
+        oscillator.frequency.setValueAtTime(freq, startTime + index * 0.48);
+        gain.gain.setValueAtTime(0.0001, startTime + index * 0.48);
+        gain.gain.exponentialRampToValueAtTime(0.045, startTime + index * 0.48 + 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + index * 0.48 + 0.75);
+        oscillator.connect(gain);
+        gain.connect(audioCtx.destination);
+        oscillator.start(startTime + index * 0.48);
+        oscillator.stop(startTime + index * 0.48 + 0.8);
+    });
+}
+
+function stopIntroMusic() {
+    introMusicPlaying = false;
+    if (introMusicTimer) clearInterval(introMusicTimer);
+    introMusicTimer = null;
+    const button = document.getElementById('btn-intro-music');
+    if (button) button.innerText = '🎵 ACTIVAR TRANSMISIÓN AMBIENTAL';
+}
+
+function toggleIntroMusic() {
+    initAudio();
+    if (introMusicPlaying) {
+        stopIntroMusic();
+        return;
+    }
+    introMusicPlaying = true;
+    playIntroAmbientLoop();
+    introMusicTimer = setInterval(playIntroAmbientLoop, 1900);
+    document.getElementById('btn-intro-music').innerText = '🔇 SILENCIAR TRANSMISIÓN AMBIENTAL';
+}
+
+function playButtonSound(button) {
+    if (button.disabled) return;
+    const id = button.id;
+    const label = button.textContent.toUpperCase();
+
+    if (id === 'btn-start-mission') return playSound(620, 'triangle', 0.16);
+    if (id === 'btn-intro-music') return playSound(700, 'sine', 0.1);
+    if (id === 'btn-puzzle') return playSound(560, 'square', 0.1);
+    if (id === 'btn-notes') return playSound(360, 'sine', 0.08);
+    if (id === 'btn-dossiers') return playSound(430, 'triangle', 0.08);
+    if (id === 'btn-achievements') return playSound(880, 'triangle', 0.12);
+    if (id === 'btn-enemies') return playSound(150, 'sawtooth', 0.12);
+    if (id === 'btn-weapons') return playSound(720, 'square', 0.1);
+    if (id === 'btn-pets') return playSound(760, 'sine', 0.12);
+    if (id === 'btn-first-stars') return playSound(820, 'triangle', 0.12);
+    if (id === 'btn-buy') return playSound(520, 'triangle', 0.14);
+    if (id === 'btn-boss') return playSound(110, 'sawtooth', 0.18);
+
+    if (label.includes('SPRAY') || label.includes('PLANTA')) return playSound(920, 'sine', 0.14);
+    if (label.includes('VIDEO')) return playSound(740, 'triangle', 0.12);
+    if (label.includes('CARTA')) return playSound(620, 'sine', 0.12);
+    if (label.includes('CERRAR') || label.includes('CANCELAR') || label.includes('CONTINUAR')) return playSound(280, 'sine', 0.07);
+    if (label.includes('DESBLOQUEAR') || label.includes('MEZCLAR') || label.includes('TRANSMITIR')) return playSound(640, 'square', 0.1);
+    if (label === '▲' || label === '▼') return playSound(420, 'square', 0.05);
+    playSound(460, 'square', 0.07);
+}
+
+document.addEventListener('click', (event) => {
+    const button = event.target.closest('button');
+    if (!button) return;
+    initAudio();
+    playButtonSound(button);
+}, true);
+
+function isImageReady(img) {
+    return Boolean(img && img.complete && img.naturalWidth > 0);
+}
+
+function escapeHTML(value) {
+    const element = document.createElement('div');
+    element.textContent = String(value);
+    return element.innerHTML;
+}
+
+function drawContainedImage(image, x, y, maxWidth, maxHeight, flipHorizontally = false) {
+    const scale = Math.min(maxWidth / image.width, maxHeight / image.height);
+    const width = Math.round(image.width * scale);
+    const height = Math.round(image.height * scale);
+    const drawX = x + (maxWidth - width) / 2;
+    const drawY = y + (maxHeight - height) / 2;
+    ctx.save();
+    if (flipHorizontally) {
+        ctx.translate(drawX + width / 2, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(image, -width / 2, drawY, width, height);
+    } else {
+        ctx.drawImage(image, drawX, drawY, width, height);
+    }
+    ctx.restore();
+}
+
+function drawBackground() {
+    ctx.fillStyle = '#0d0615';
+    ctx.fillRect(0, 0, canvas.width, 160);
+    ctx.fillStyle = '#1d0d2d';
+    for(let i = 0; i < canvas.width; i += 120) ctx.fillRect(i, 0, 30, 160);
+    ctx.fillStyle = '#160923';
+    ctx.fillRect(0, 160, canvas.width, 40);
+    ctx.fillStyle = 'rgba(216, 180, 254, 0.35)';
+    rain.forEach(drop => {
+        ctx.fillRect(drop.x, drop.y, 1, drop.length);
+        drop.y += drop.speed;
+        if (drop.y > 160) drop.y = 0;
+    });
+}
+
+function drawGame() {
+    frameCount++;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
+
+    const stage = enemyStages[Math.min(enemyStage, enemyStages.length - 1)];
+    const enemyPanelX = 642;
+    const enemyPanelWidth = 150;
+    const bossY = 35 + (Math.floor(frameCount / 15) % 2) * 2;
+    
+    // Zona de combate: el enemigo mira hacia JuviaSc, a la izquierda.
+    if (isImageReady(stage.avatarObj)) {
+        drawContainedImage(stage.avatarObj, enemyPanelX, bossY, enemyPanelWidth, 122, stage.mirrorToFaceJuvi);
+    } else {
+        ctx.fillStyle = isVictory ? '#222222' : stage.color;
+        ctx.fillRect(enemyPanelX + 15, bossY, 120, 122);
+    }
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(enemyPanelX, 5, enemyPanelWidth, 12);
+    ctx.fillStyle = '#c084fc';
+    ctx.fillRect(enemyPanelX, 5, Math.max(0, (enemyHealth / stage.health) * enemyPanelWidth), 12);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '11px "Share Tech Mono"';
+    ctx.fillText(stage.enemy, enemyPanelX + (enemyPanelWidth - ctx.measureText(stage.enemy).width) / 2, 29);
+    const doorIsOpen = openedDoors.has(enemyStage);
+    ctx.fillStyle = doorIsOpen ? '#14532d' : '#3b1762';
+    ctx.fillRect(550, 62, 70, 98);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(stage.door, 520, 50);
+    ctx.fillStyle = doorIsOpen ? '#86efac' : '#facc15';
+    ctx.fillText(doorIsOpen ? 'ZONA ABIERTA' : `🔑 ${stage.key}`, 520, 178);
+    if (!doorIsOpen && keysObtained.has(enemyStage) && isImageReady(stage.keyObj)) {
+        drawContainedImage(stage.keyObj, 568, 96, 34, 36);
+    }
+    ctx.fillStyle = weaponsUnlocked.has(enemyStage) ? '#e9d5ff' : '#8f7aa5';
+    ctx.fillText(`ARMA: ${stage.weapon}`, 12, 20);
+    ctx.fillStyle = weaponsUnlocked.has(enemyStage) ? '#facc15' : '#8f7aa5';
+    ctx.fillText(`MUNICIÓN: ${stage.ammoRemaining}/${stage.ammo} · DAÑO: ${stage.damage}`, 12, 36);
+
+    // Dibujar a JuviaSc con su imagen (o respaldo si carga)
+    if (isImageReady(juviaImg)) {
+        ctx.drawImage(juviaImg, playerX, 60, 55, 100);
+    } else {
+        ctx.fillStyle = '#a855f7';
+        ctx.fillRect(playerX, 75, 50, 85);
+    }
+
+    // Kiseki y Nyu acompañan a JuviaSc en cada zona.
+    if (isImageReady(kisekiImg)) ctx.drawImage(kisekiImg, 5, 120, 45, 40);
+    else {
+        ctx.fillStyle = '#d8b4fe';
+        ctx.fillRect(8, 130, 40, 30);
+    }
+    if (isImageReady(nyuImg)) ctx.drawImage(nyuImg, 115, 125, 35, 35);
+    else {
+        ctx.fillStyle = '#c084fc';
+        ctx.fillRect(118, 132, 28, 28);
+    }
+
+    // Dibujar aliados reclutados con sus respectivas imágenes
+    for (let i = 0; i < friendsUnlocked; i++) {
+        const f = friendsList[i];
+        let allyX = 155 + (i * 48);
+        if (isImageReady(f.avatarObj)) {
+            ctx.drawImage(f.avatarObj, allyX, 70, 44, 90);
+        } else {
+            ctx.fillStyle = f.color;
+            ctx.fillRect(allyX, 85, 38, 75);
+        }
+    }
+
+    requestAnimationFrame(drawGame);
+}
+
+function updateUI() {
+    document.getElementById('ui-coins').innerText = `${coins} 🔫`;
+    let totalStr = 10, totalMag = 10, totalDef = 10;
+    
+    const partyContainer = document.getElementById('party-list');
+    partyContainer.innerHTML = '';
+
+    for (let i = 0; i < friendsUnlocked; i++) {
+        const f = friendsList[i];
+        totalStr += f.str;
+        totalMag += f.mag;
+        totalDef += f.def;
+
+        const badge = document.createElement('div');
+        badge.className = 'party-badge';
+        badge.style.borderColor = f.color;
+        badge.innerHTML = `<span style="color:${f.color}">●</span> ${f.name}`;
+        partyContainer.appendChild(badge);
+    }
+
+    document.getElementById('ui-str').innerText = totalStr;
+    document.getElementById('ui-mag').innerText = totalMag;
+    document.getElementById('ui-def').innerText = totalDef;
+    document.getElementById('ui-health').innerText = `${playerHealth}/100`;
+    document.getElementById('ui-friends-count').innerText = friendsUnlocked;
+
+    const currentStage = enemyStages[Math.min(enemyStage, enemyStages.length - 1)];
+    const threatPercent = isVictory ? 0 : Math.round((enemyHealth / currentStage.health) * 100);
+    document.getElementById('ui-power').innerText = `${threatPercent}%`;
+    document.getElementById('team-fill').style.width = `${(friendsUnlocked / maxFriends) * 100}%`;
+
+    document.getElementById('btn-buy').disabled = (friendsUnlocked >= maxFriends || coins < 25 || !solvedPuzzles.has(friendsUnlocked));
+    const recoveryRequired = playerHealth < 100 && !currentEnemyEngaged;
+    document.getElementById('btn-puzzle').disabled =
+        friendsUnlocked >= maxFriends || solvedPuzzles.has(friendsUnlocked) || friendsUnlocked !== enemyStage || recoveryRequired;
+    const combatButton = document.getElementById('btn-boss');
+    const doorButton = document.getElementById('btn-door');
+    const stage = enemyStages[Math.min(enemyStage, enemyStages.length - 1)];
+    combatButton.innerText = isVictory ? '🏆 MISIÓN COMPLETADA' : `⚔️ DISPARAR: ${stage.weapon} [${stage.ammoRemaining}/${stage.ammo}]`;
+    const currentEnemyDefeated = defeatedEnemies.has(enemyStage);
+    combatButton.disabled = isVictory || currentEnemyDefeated || friendsUnlocked <= enemyStage || !weaponsUnlocked.has(enemyStage) || recoveryRequired || stage.ammoRemaining <= 0;
+    doorButton.innerText = openedDoors.has(enemyStage)
+        ? `✅ ZONA: ${stage.door}`
+        : currentEnemyDefeated
+            ? `🔑 USAR: ${stage.key}`
+            : `🔒 ELIMINA A ${stage.enemy}`;
+    doorButton.disabled = isVictory || openedDoors.has(enemyStage) || !keysObtained.has(enemyStage) || !currentEnemyDefeated || recoveryRequired;
+    document.getElementById('btn-first-stars').disabled = !isVictory;
+}
+
+function showLog(msg) {
+    document.getElementById('log-message').innerText = msg;
+}
+
+function closeModal() {
+    document.getElementById('puzzleModal').style.display = 'none';
+}
+
+function toggleNote(cardElement) {
+    playSound(400, 'sine', 0.05);
+    cardElement.classList.toggle('active');
+}
+
+function openAchievementsModal() {
+    initAudio();
+    playSound(500, 'square', 0.1);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = "🏆 LOGROS Y VIDEOS DE ESCUADRÓN";
+
+    let html = `<div class="achievements-grid">`;
+    friendsList.forEach((f, index) => {
+        const isUnlocked = solvedPuzzles.has(index);
+        const canWatchVideo = isVictory && !f.letter;
+        const canReadLetter = isVictory && Boolean(f.letter);
+        const description = !isUnlocked
+            ? 'Resuelve su acertijo para desbloquear este logro.'
+            : (isVictory ? f.achievementDesc : 'Video bloqueado: derrota a Nemesis para desbloquearlo.');
+        html += `
+            <div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
+                <div class="achievement-icon">${isUnlocked ? '🎬' : '🔒'}</div>
+                <div class="achievement-info">
+                    <div class="achievement-title">${escapeHTML(f.achievementTitle)}</div>
+                    <div class="achievement-desc">${escapeHTML(description)}</div>
+                    ${canWatchVideo ? `<button class="btn-watch-video" onclick="playAchievementVideo(${index})">▶️ VER VIDEO</button>` : ''}
+                    ${canReadLetter ? `<button class="btn-watch-video" onclick="openLetter(${index})">💌 LEER CARTA</button>` : ''}
+                </div>
+            </div>
+        `;
+    });
+    html += `
+        <div class="achievement-card ${isVictory ? 'unlocked' : ''}">
+            <div class="achievement-icon">${isVictory ? '🐾' : '🔒'}</div>
+            <div class="achievement-info">
+                <div class="achievement-title">🏆 COMPAÑEROS PARA SIEMPRE</div>
+                <div class="achievement-desc">${isVictory ? 'Kiseki y Nyu tienen una carta de cumpleaños para JuviaSc.' : 'Derrota a Nemesis para desbloquear la carta de Kiseki y Nyu.'}</div>
+                ${isVictory ? '<button class="btn-watch-video" onclick="openPetsLetter()">💌 LEER CARTA</button>' : ''}
+            </div>
+        </div>
+    `;
+    html += `</div>
+        <div id="video-display-area"></div>
+        <button onclick="closeModal()" style="margin-top:15px; width:100%;">CERRAR</button>`;
+    
+    body.innerHTML = html;
+    modal.style.display = 'flex';
+}
+
+function playAchievementVideo(index) {
+    playSound(800, 'sine', 0.1);
+    const f = friendsList[index];
+    const display = document.getElementById('video-display-area');
+    display.innerHTML = `
+        <div class="video-container">
+            <div style="font-size:7px; color:#f1c40f; margin-bottom:6px;">REPRODUCIENDO CINE DE: ${escapeHTML(f.name.toUpperCase())}</div>
+            <video controls autoplay>
+                <source src="${f.videoUrl}" type="video/mp4">
+                Tu navegador no soporta reproducción de video.
+            </video>
+        </div>
+    `;
+}
+
+function openNotesModal() {
+    initAudio();
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = "📂 NOTAS Y DOCUMENTOS RECOLECTADOS";
+
+    let shuffledNotes = [...friendsList].sort(() => Math.random() - 0.5);
+
+    let html = `<div class="notes-list">`;
+    shuffledNotes.forEach((f) => {
+        html += `
+            <div class="note-card" onclick="toggleNote(this)">
+                <div class="note-preview-bar">
+                    <img src="${escapeHTML(f.photoUrl)}" class="interactive-img" alt="${escapeHTML(f.name)}">
+                    <div class="note-title-box">
+                        <div class="note-title">${escapeHTML(f.noteTitle)}</div>
+                        <div class="hover-hint">Haz clic para desplegar / ocultar pista</div>
+                    </div>
+                </div>
+                <div class="note-collapsible-content">
+                    <div class="note-text">${escapeHTML(f.noteText)}</div>
+                </div>
+            </div>
+        `;
+    });
+    html += `</div><button onclick="closeModal()" style="margin-top:15px; width:100%;">CERRAR</button>`;
+    body.innerHTML = html;
+    modal.style.display = 'flex';
+}
+
+function openLetter(index) {
+    const friend = friendsList[index];
+    if (!friend.letter) return;
+    playSound(650, 'sine', 0.1);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = `💌 CARTA DE ${friend.name.toUpperCase()}`;
+    body.innerHTML = `
+        <div style="background:#1b0d2a; border:2px solid #d8b4fe; padding:18px; color:#f3e8ff; font-size:13px; line-height:1.65; text-align:left; white-space:pre-wrap;">${escapeHTML(friend.letter)}</div>
+        <button onclick="closeModal()" style="width:100%; margin-top:15px;">GUARDAR CARTA</button>
+    `;
+    modal.style.display = 'flex';
+}
+
+function openPetsLetter() {
+    playSound(720, 'sine', 0.12);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '💌 CARTA DE KISEKI Y NYU';
+    body.innerHTML = `
+        <div style="display:flex; justify-content:center; gap:18px; margin-bottom:15px;">
+            <img src="assets/mascotas/kiseki.png" class="dossier-photo" alt="Kiseki">
+            <img src="assets/mascotas/nyu.png" class="dossier-photo" alt="Nyu">
+        </div>
+        <div style="background:#1b0d2a; border:2px solid #d8b4fe; padding:18px; color:#f3e8ff; font-size:12px; line-height:1.6; text-align:left; white-space:pre-wrap;">JUVIASC:
+
+Kiseki ha estado contigo durante muchos años. Ha visto tus días tranquilos, tus misiones difíciles y cada momento en que elegiste cuidar a los demás. No necesita decir muchas palabras para recordarte que siempre reconoce tu camino y que su lugar seguirá siendo a tu lado.
+
+Nyu, tu compañero fiel de todos los días, quiere recordarte que las pequeñas pausas, las risas y la compañía también forman parte de una gran misión. Estar contigo es su manera de decir que nunca caminas sola.
+
+Hoy los dos celebran contigo. Feliz cumpleaños, JuviaSc. Gracias por darles un hogar, por cuidar de tu escuadrón y por seguir iluminando a quienes te rodean. Que esta nueva vuelta esté llena de cariño, aventuras y muchos momentos juntos.
+
+Con cariño,
+Kiseki 🐶 y Nyu 🐱</div>
+        <button onclick="closeModal()" style="width:100%; margin-top:15px;">GUARDAR CARTA</button>
+    `;
+    modal.style.display = 'flex';
+}
+
+function openDossiersModal() {
+    initAudio();
+    playSound(500, 'square', 0.08);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '🗃️ EXPEDIENTES: CARTAS DE SACRIFICIOS';
+
+    if (friendsUnlocked === 0) {
+        body.innerHTML = `
+            <p style="font-size:7px; line-height:1.8; color:#aaa;">NO HAY EXPEDIENTES DISPONIBLES. RECLUTA A UN ALIADO PARA DESBLOQUEAR SU ARCHIVO.</p>
+            <button onclick="closeModal()" style="width:100%; margin-top:15px;">CERRAR</button>
+        `;
+    } else {
+        let html = '';
+        friendsList.slice(0, friendsUnlocked).forEach((friend, index) => {
+            html += `
+                <article class="dossier-card">
+                    <img src="${escapeHTML(friend.photoUrl)}" class="dossier-photo" alt="Fotografía de ${escapeHTML(friend.name)}">
+                    <div>
+                        <div class="achievement-title">EXPEDIENTE ${String(index + 1).padStart(2, '0')} — ${escapeHTML(friend.name.toUpperCase())}</div>
+                        <div class="dossier-story">${escapeHTML(recruitmentDossiers[index])}</div>
+                    </div>
+                </article>
+            `;
+        });
+        body.innerHTML = `${html}<button onclick="closeModal()" style="width:100%; margin-top:8px;">CERRAR EXPEDIENTES</button>`;
+    }
+    modal.style.display = 'flex';
+}
+
+function openEnemiesModal() {
+    initAudio();
+    playSound(180, 'sawtooth', 0.08);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '☣️ ARCHIVO: ENEMIGOS DERROTADOS';
+
+    if (defeatedEnemies.size === 0) {
+        body.innerHTML = `
+            <p style="font-size:7px; line-height:1.8; color:#aaa;">AÚN NO HAY AMENAZAS ELIMINADAS. VENCE A UN ENEMIGO PARA DESBLOQUEAR SU REPORTE.</p>
+            <button onclick="closeModal()" style="width:100%; margin-top:15px;">CERRAR</button>
+        `;
+    } else {
+        let html = '';
+        enemyStages.forEach((enemy, index) => {
+            if (!defeatedEnemies.has(index)) return;
+            html += `
+                <article class="dossier-card" style="border-color:#c084fc;">
+                    ${enemy.iconUrl
+                        ? `<img src="${escapeHTML(enemy.iconUrl)}" class="dossier-photo" alt="${escapeHTML(enemy.enemy)}">`
+                        : '<div class="achievement-icon">☠️</div>'}
+                    <div>
+                        <div class="achievement-title">ELIMINADO — ${escapeHTML(enemy.enemy)}</div>
+                        <div class="dossier-story">${escapeHTML(enemyReports[index])}</div>
+                        <div style="font-size:5px; color:#d8b4fe; margin-top:8px;">ZONA ASEGURADA: ${escapeHTML(enemy.door)}</div>
+                    </div>
+                </article>
+            `;
+        });
+        body.innerHTML = `${html}<button onclick="closeModal()" style="width:100%; margin-top:8px;">CERRAR ARCHIVO</button>`;
+    }
+    modal.style.display = 'flex';
+}
+
+function openWeaponsModal() {
+    initAudio();
+    playSound(650, 'square', 0.08);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '🔫 ARMERÍA: CARTAS DE SACRIFICIOS';
+
+    if (weaponsUnlocked.size === 0) {
+        body.innerHTML = `
+            <p style="font-size:7px; line-height:1.8; color:#aaa;">ARMERÍA VACÍA. RECLUTA A UN ALIADO PARA QUE ENTREGUE SU ARMA DE COMBATE.</p>
+            <button onclick="closeModal()" style="width:100%; margin-top:15px;">CERRAR</button>
+        `;
+    } else {
+        let html = '';
+        enemyStages.forEach((stage, index) => {
+            if (!weaponsUnlocked.has(index)) return;
+            const ally = friendsList[index];
+            html += `
+                <article class="dossier-card" style="border-color:#d8b4fe;">
+                    <img src="${escapeHTML(stage.weaponUrl)}" class="weapon-photo" alt="${escapeHTML(stage.weapon)}">
+                    <div>
+                        <div class="achievement-title">${escapeHTML(stage.weapon)}</div>
+                        <div class="dossier-story">ENTREGADA POR: ${escapeHTML(ally.name.toUpperCase())}\nARMA ASIGNADA PARA: ${escapeHTML(stage.enemy)}\nDAÑO POR DISPARO: ${stage.damage}\nMUNICIÓN DE MISIÓN: ${stage.ammoRemaining}/${stage.ammo}\nESTADO: EQUIPADA EN LA ARMERÍA DE JUVIASC.</div>
+                    </div>
+                </article>
+            `;
+        });
+        body.innerHTML = `${html}<button onclick="closeModal()" style="width:100%; margin-top:8px;">CERRAR ARMERÍA</button>`;
+    }
+    modal.style.display = 'flex';
+}
+
+function openKeysModal() {
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '🔑 INVENTARIO DE LLAVES';
+
+    if (keysObtained.size === 0) {
+        body.innerHTML = '<p style="font-size:12px; line-height:1.7; color:#f3e8ff;">AÚN NO HAY LLAVES. RESUELVE EL ACERTIJO DE CADA ZONA PARA RECIBIR LA LLAVE DE ACCESO.</p><button onclick="closeModal()" style="width:100%; margin-top:15px;">CERRAR</button>';
+    } else {
+        let html = '';
+        enemyStages.forEach((stage, index) => {
+            if (!keysObtained.has(index)) return;
+            const used = openedDoors.has(index);
+            html += `<article class="dossier-card" style="border-color:${used ? '#86efac' : '#facc15'}; align-items:center;">
+                <img src="${escapeHTML(stage.keyUrl)}" class="dossier-photo" alt="${escapeHTML(stage.key)}">
+                <div><div class="achievement-title">${escapeHTML(stage.key)}</div><div class="dossier-story">ABRE: ${escapeHTML(stage.door)}\nESTADO: ${used ? 'UTILIZADA — ZONA ABIERTA' : 'LISTA PARA USARSE'}</div></div>
+            </article>`;
+        });
+        body.innerHTML = `${html}<button onclick="closeModal()" style="width:100%; margin-top:15px;">CERRAR</button>`;
+    }
+    modal.style.display = 'flex';
+}
+
+function useHealingItem(type) {
+    initAudio();
+    if (playerHealth >= 100) {
+        showLog('JUVIASC YA TIENE LA SALUD COMPLETA. GUARDA EL RECURSO PARA LA SIGUIENTE BATALLA.');
+        return;
+    }
+    if (type === 'spray' && healingSprays > 0) {
+        healingSprays--;
+        playerHealth = 100;
+        showLog('KISEKI USÓ UN SPRAY DE PRIMEROS AUXILIOS. SALUD RESTAURADA AL 100%.');
+    } else if (type === 'herb' && healingHerbs > 0) {
+        healingHerbs--;
+        playerHealth = Math.min(100, playerHealth + 25);
+        showLog('NYU ENTREGÓ UNA PLANTA VERDE. RECUPERASTE 25 DE SALUD.');
+    } else {
+        showLog('NO QUEDAN RECURSOS DE CURACIÓN DE ESE TIPO.');
+    }
+    playSound(900, 'sine', 0.15);
+    updateUI();
+    openPetsModal();
+}
+
+function openPetsModal() {
+    initAudio();
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '🐾 MASCOTAS DE JUVIASC';
+    body.innerHTML = `
+        <article class="dossier-card" style="border-color:#d8b4fe;">
+            <img src="assets/mascotas/kiseki.png" class="dossier-photo" alt="Kiseki">
+            <div>
+                <div class="achievement-title">KISEKI — PERRO VETERANO</div>
+                <div class="dossier-story">Kiseki ha acompañado a JuviaSc durante muchos años. Por cada enemigo derrotado encuentra un SPRAY DE PRIMEROS AUXILIOS, que restaura toda la salud.</div>
+                <div style="font-size:7px; color:#d8b4fe; margin:8px 0;">SPRAYS DISPONIBLES: ${healingSprays}</div>
+                <button onclick="useHealingItem('spray')" ${healingSprays === 0 || playerHealth >= 100 ? 'disabled' : ''} style="width:100%;">USAR SPRAY</button>
+            </div>
+        </article>
+        <article class="dossier-card" style="border-color:#c084fc;">
+            <img src="assets/mascotas/nyu.png" class="dossier-photo" alt="Nyu">
+            <div>
+                <div class="achievement-title">NYU — GATO JOVEN</div>
+                <div class="dossier-story">Nyu es el integrante más joven de la misión. Cada vez que un aliado se une, entrega una PLANTA VERDE que recupera 25 de salud.</div>
+                <div style="font-size:7px; color:#d8b4fe; margin:8px 0;">PLANTAS VERDES DISPONIBLES: ${healingHerbs}</div>
+                <button onclick="useHealingItem('herb')" ${healingHerbs === 0 || playerHealth >= 100 ? 'disabled' : ''} style="width:100%;">USAR PLANTA VERDE</button>
+            </div>
+        </article>
+        <div style="font-size:7px; color:#f3e8ff; margin:12px 0;">SALUD ACTUAL: ${playerHealth}/100</div>
+        <button onclick="closeModal()" style="width:100%;">CERRAR</button>
+    `;
+    modal.style.display = 'flex';
+}
+
+function openFirstStarsModal() {
+    if (!isVictory) {
+        showLog('EL ARCHIVO DE LOS PRIMEROS S.T.A.R.S. SE DESBLOQUEA AL DERROTAR A NEMESIS.');
+        return;
+    }
+    initAudio();
+    playSound(860, 'triangle', 0.12);
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = '⭐ ARCHIVO: PRIMEROS S.T.A.R.S.';
+
+    let html = `<p style="font-size:7px; color:#d8b4fe; line-height:1.8;">ARCHIVO DESBLOQUEADO. ESTOS FUERON LOS PRIMEROS COMPAÑEROS QUE RECONOCIERON EL VALOR DE JUVIASC.</p>`;
+    firstStarsRecords.forEach(record => {
+        html += `
+            <article class="dossier-card" style="border-color:#d8b4fe;">
+                ${record.iconUrl
+                    ? `<img src="${escapeHTML(record.iconUrl)}" class="dossier-photo" alt="${escapeHTML(record.name)}">`
+                    : '<div class="achievement-icon">⭐</div>'}
+                <div>
+                    <div class="achievement-title">${escapeHTML(record.name)}</div>
+                    <div style="font-size:5px; color:#c084fc; margin:5px 0;">${escapeHTML(record.role)}</div>
+                    <div class="dossier-story">${escapeHTML(record.text)}</div>
+                </div>
+            </article>
+        `;
+    });
+    body.innerHTML = `${html}<button onclick="closeModal()" style="width:100%; margin-top:8px;">CERRAR ARCHIVO</button>`;
+    modal.style.display = 'flex';
+}
+
+function openPuzzleModal() {
+    if (playerHealth < 100 && !currentEnemyEngaged) {
+        showLog('ANTES DE AVANZAR A LA SIGUIENTE ZONA, RECUPERA LA SALUD AL 100% CON KISEKI O NYU.');
+        return;
+    }
+    if (friendsUnlocked >= maxFriends) {
+        showLog("¡TODOS LOS DISPOSITIVOS HAN SIDO DESBLOQUEADOS!");
+        return;
+    }
+    initAudio();
+    if (solvedPuzzles.has(friendsUnlocked)) {
+        showLog("YA RESOLVISTE ESTE DISPOSITIVO. RECLUTA AL ALIADO PARA CONTINUAR.");
+        updateUI();
+        return;
+    }
+    if (lockedTerminals.has(friendsUnlocked)) {
+        showLog("ESTA TERMINAL QUEDÓ BLOQUEADA. RECARGA LA MISIÓN PARA REINTENTARLA.");
+        return;
+    }
+    activeFriendIndex = friendsUnlocked;
+    const friend = friendsList[friendsUnlocked];
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+
+    if (friend.puzzle === "safe") {
+        safeTarget = friend.safeCode;
+        safeCurrent = [0, 0, 0, 0];
+        document.getElementById('puzzle-title').innerText = "🔒 CAJA FUERTE S.T.A.R.S.";
+        body.innerHTML = `
+            <p style="font-size:7px; line-height:1.5;">INGRESA EL CÓDIGO DE 4 DÍGITOS:</p>
+            <div class="safe-dial-container">
+                ${[0,1,2,3].map(i => `
+                    <div class="safe-digit-box">
+                        <button class="safe-btn-arrow" onclick="changeDial(${i}, 1)">▲</button>
+                        <div class="safe-digit-value" id="dial-${i}">0</div>
+                        <button class="safe-btn-arrow" onclick="changeDial(${i}, -1)">▼</button>
+                    </div>
+                `).join('')}
+            </div>
+            <button onclick="checkSafe()" style="width:100%;">DESBLOQUEAR</button>
+            <button onclick="closeModal()" style="width:100%; margin-top:8px; background:#444;">CANCELAR</button>
+        `;
+    } else if (friend.puzzle === "sequence") {
+        seqTarget = friend.seqPattern;
+        seqCurrent = [];
+        document.getElementById('puzzle-title').innerText = "⚡ PANEL DE FUSIBLES";
+        body.innerHTML = `
+            <p style="font-size:7px;">ACTIVA LOS INTERRUPTORES EN EL ORDEN CORRECTO:</p>
+            <div class="seq-grid">
+                ${[1,2,3,4,5,6].map(i => `
+                    <div class="seq-node" id="seq-node-${i}" onclick="pressSeq(${i})">SW-${i}</div>
+                `).join('')}
+            </div>
+            <button onclick="closeModal()" style="width:100%; background:#444;">CANCELAR</button>
+        `;
+    } else if (friend.puzzle === "vial") {
+        vialTarget = friend.vialReq;
+        vialReds = 0; vialBlues = 0; vialGreens = 0;
+        document.getElementById('puzzle-title').innerText = "🧪 SINTETIZADOR DE VACUNAS";
+        renderVialPuzzle();
+    } else if (friend.puzzle === "terminal") {
+        hackTarget = friend.termWord;
+        hackAttempts = 4;
+        document.getElementById('puzzle-title').innerText = "💻 TERMINAL DE ACCESO UMBRELLA";
+        body.innerHTML = `
+            <div class="crt-screen">
+                <div class="terminal-log" id="term-log">> INICIALIZANDO SISTEMA...<br>> CONTRASEÑA DE 5 LETRAS REQUERIDA.</div>
+                <div>INTENTOS RESTANTES: <span id="term-attempts">4</span></div>
+            </div>
+            <input type="text" id="term-input" maxlength="5" style="width:100%; font-family:'Press Start 2P'; font-size:10px; padding:8px; background:#000; color:#2ecc71; border:2px solid #2ecc71; text-transform:uppercase; margin-bottom:10px;" placeholder="*****">
+            <button onclick="checkTerminal()" style="width:100%;">TRANSMITIR CLAVE</button>
+            <button onclick="closeModal()" style="width:100%; margin-top:8px; background:#444;">CANCELAR</button>
+        `;
+    }
+    modal.style.display = 'flex';
+}
+
+function changeDial(idx, dir) {
+    playSound(400, 'square', 0.05);
+    safeCurrent[idx] = (safeCurrent[idx] + dir + 10) % 10;
+    document.getElementById(`dial-${idx}`).innerText = safeCurrent[idx];
+}
+
+function checkSafe() {
+    if (safeCurrent.every((v, i) => v === safeTarget[i])) {
+        puzzleSuccess();
+    } else {
+        playSound(150, 'sawtooth', 0.2);
+        showLog("CÓDIGO INCORRECTO. REVISA LAS NOTAS DE CAMPO.");
+    }
+}
+
+function pressSeq(val) {
+    playSound(600, 'sine', 0.08);
+    seqCurrent.push(val);
+    const node = document.getElementById(`seq-node-${val}`);
+    if(node) node.classList.add('active');
+
+    const idx = seqCurrent.length - 1;
+    if (seqCurrent[idx] !== seqTarget[idx]) {
+        playSound(120, 'sawtooth', 0.3);
+        seqCurrent = [];
+        document.querySelectorAll('.seq-node').forEach(n => n.classList.remove('active'));
+        showLog("SECUENCIA INCORRECTA. CORRIENTE REINICIADA.");
+        return;
+    }
+
+    if (seqCurrent.length === seqTarget.length) {
+        puzzleSuccess();
+    }
+}
+
+function renderVialPuzzle() {
+    const body = document.getElementById('puzzle-body');
+    body.innerHTML = `
+        <p style="font-size:6px;">AJUSTA LOS REACTIVOS (OBJETIVO: R:${vialTarget[0]} A:${vialTarget[1]} V:${vialTarget[2]}):</p>
+        <div class="mixer-container">
+            <div>
+                <div class="mixer-vial">${Array(5).fill(0).map((_,i) => `<div class="vial-segment ${i < vialReds ? 'active-red':''}"></div>`).join('')}</div>
+                <button onclick="addVial('r')" style="margin-top:5px;">+ ROJO</button>
+            </div>
+            <div>
+                <div class="mixer-vial">${Array(5).fill(0).map((_,i) => `<div class="vial-segment ${i < vialBlues ? 'active-blue':''}"></div>`).join('')}</div>
+                <button onclick="addVial('b')" style="margin-top:5px;">+ AZUL</button>
+            </div>
+            <div>
+                <div class="mixer-vial">${Array(5).fill(0).map((_,i) => `<div class="vial-segment ${i < vialGreens ? 'active-green':''}"></div>`).join('')}</div>
+                <button onclick="addVial('g')" style="margin-top:5px;">+ VERDE</button>
+            </div>
+        </div>
+        <button onclick="checkVials()" style="width:100%;">MEZCLAR</button>
+        <button onclick="closeModal()" style="width:100%; margin-top:8px; background:#444;">CANCELAR</button>
+    `;
+}
+
+function addVial(type) {
+    playSound(500, 'sine', 0.05);
+    if (type === 'r') vialReds = (vialReds + 1) % 6;
+    if (type === 'b') vialBlues = (vialBlues + 1) % 6;
+    if (type === 'g') vialGreens = (vialGreens + 1) % 6;
+    renderVialPuzzle();
+}
+
+function checkVials() {
+    if (vialReds === vialTarget[0] && vialBlues === vialTarget[1] && vialGreens === vialTarget[2]) {
+        puzzleSuccess();
+    } else {
+        playSound(150, 'sawtooth', 0.2);
+        showLog("MEZCLA INESTABLE. PROPORCIONES INCORRECTAS.");
+    }
+}
+
+function checkTerminal() {
+    const input = document.getElementById('term-input').value.toUpperCase();
+    const log = document.getElementById('term-log');
+
+    if (input === hackTarget) {
+        puzzleSuccess();
+    } else {
+        playSound(150, 'sawtooth', 0.2);
+        hackAttempts--;
+        document.getElementById('term-attempts').innerText = hackAttempts;
+        log.innerHTML += `<br>> ACCESO DENEGADO: ${input}`;
+        if (hackAttempts <= 0) {
+            lockedTerminals.add(activeFriendIndex);
+            closeModal();
+            showLog("TERMINAL BLOQUEADA POR SEGURIDAD. INTÉNTALO DE NUEVO.");
+        }
+    }
+}
+
+function showPuzzleAchievement(index) {
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = "🏆 NUEVO LOGRO";
+    body.innerHTML = `
+        <div style="border:2px solid #f1c40f; background:#1a1500; padding:22px; margin:18px 0;">
+            <div style="font-size:30px; margin-bottom:14px;">🏆</div>
+            <div style="font-size:9px; color:#f1c40f; line-height:1.7;">HAS DESBLOQUEADO UN NUEVO LOGRO</div>
+        </div>
+        <button onclick="closeModal()" style="width:100%;">CONTINUAR</button>
+    `;
+    modal.style.display = 'flex';
+}
+
+function showFinalVictory() {
+    const modal = document.getElementById('puzzleModal');
+    const body = document.getElementById('puzzle-body');
+    document.getElementById('puzzle-title').innerText = "🎂 ¡FELIZ CUMPLEAÑOS, JUVIASC! 🎂";
+    body.innerHTML = `
+        <div style="border:2px solid #f1c40f; background:#1a1500; padding:18px; margin:18px 0; line-height:1.9;">
+            <div style="font-size:26px; margin-bottom:12px;">🏆 🎉 ☣️</div>
+            <div style="font-size:9px; color:#f1c40f; margin-bottom:12px;">MISIÓN RACCOON CITY COMPLETADA</div>
+            <div style="font-size:7px; color:#fff;">NEMESIS HA CAÍDO Y EL ESCUADRÓN ESCAPÓ CON ÉXITO.</div>
+            <div style="font-size:8px; color:#ff2a2a; margin:16px 0;">¡FELICIDADES POR TUS CUMPLEAÑOS!<br>GENERACIÓN 1996</div>
+            <div style="font-size:7px; color:#2ecc71;">JUVIASC ESTÁ LISTA PARA LA SIGUIENTE MISIÓN.</div>
+        </div>
+        <button onclick="closeModal()" style="width:100%; background:#f1c40f; color:#000;">CONTINUAR A LA PRÓXIMA MISIÓN</button>
+    `;
+    modal.style.display = 'flex';
+}
+
+function puzzleSuccess() {
+    if (activeFriendIndex === null || solvedPuzzles.has(activeFriendIndex)) return;
+    solvedPuzzles.add(activeFriendIndex);
+    keysObtained.add(activeFriendIndex);
+    playSound(800, 'square', 0.1);
+    setTimeout(() => playSound(1200, 'square', 0.2), 100);
+    coins += 30;
+    showLog(`¡ACERTIJO RESUELTO! OBTUVISTE ${enemyStages[activeFriendIndex].key}. ÚSALA PARA ABRIR ${enemyStages[activeFriendIndex].door} Y RECLUTA A ${friendsList[activeFriendIndex].name.toUpperCase()}.`);
+    updateUI();
+    showPuzzleAchievement(activeFriendIndex);
+}
+
+document.getElementById('btn-puzzle').addEventListener('click', openPuzzleModal);
+document.getElementById('btn-notes').addEventListener('click', openNotesModal);
+document.getElementById('btn-dossiers').addEventListener('click', openDossiersModal);
+document.getElementById('btn-enemies').addEventListener('click', openEnemiesModal);
+document.getElementById('btn-weapons').addEventListener('click', openWeaponsModal);
+document.getElementById('btn-keys').addEventListener('click', openKeysModal);
+document.getElementById('btn-pets').addEventListener('click', openPetsModal);
+document.getElementById('btn-first-stars').addEventListener('click', openFirstStarsModal);
+document.getElementById('btn-achievements').addEventListener('click', openAchievementsModal);
+
+document.getElementById('btn-door').addEventListener('click', () => {
+    initAudio();
+    const stage = enemyStages[enemyStage];
+    if (!stage || isVictory) return;
+    if (!defeatedEnemies.has(enemyStage)) {
+        showLog(`NO PUEDES USAR ${stage.key} TODAVÍA. ELIMINA A ${stage.enemy} PARA ABRIR ${stage.door}.`);
+        return;
+    }
+    if (playerHealth < 100 && !currentEnemyEngaged) {
+        showLog('RECUPERA 100 DE SALUD CON KISEKI O NYU ANTES DE ABRIR LA SIGUIENTE ZONA.');
+        return;
+    }
+    if (!keysObtained.has(enemyStage)) {
+        showLog(`LA ${stage.door} ESTÁ CERRADA. RESUELVE EL ACERTIJO PARA CONSEGUIR ${stage.key}.`);
+        return;
+    }
+    openedDoors.add(enemyStage);
+    playSound(700, 'square', 0.16);
+    setTimeout(() => playSound(980, 'triangle', 0.1), 90);
+    if (enemyStage === enemyStages.length - 1) {
+        isVictory = true;
+        currentEnemyEngaged = false;
+        showLog(`¡${stage.key} UTILIZADA! LA SALIDA DE NEST 2 SE ABRE Y EL ESCUADRÓN ESCAPA DE RACCOON CITY.`);
+        showFinalVictory();
+    } else {
+        const nextStage = enemyStages[enemyStage + 1];
+        showLog(`¡${stage.key} UTILIZADA! ${stage.door} SE ABRE. HAS ENTRADO A LA SIGUIENTE ZONA: ${nextStage.enemy}.`);
+        enemyStage++;
+        enemyHealth = nextStage.health;
+        currentEnemyEngaged = false;
+    }
+    updateUI();
+});
+
+document.getElementById('btn-buy').addEventListener('click', () => {
+    initAudio();
+    if (coins >= 25 && friendsUnlocked < maxFriends) {
+        const recruitIndex = friendsUnlocked;
+        coins -= 25;
+        friendsUnlocked++;
+        weaponsUnlocked.add(recruitIndex);
+        enemyStages[recruitIndex].ammoRemaining = enemyStages[recruitIndex].ammo;
+        healingHerbs++;
+        playSound(600, 'triangle', 0.2);
+        const unlockedFriend = friendsList[friendsUnlocked - 1];
+        showLog(`¡${unlockedFriend.name.toUpperCase()} RECLUTADO! TE ENTREGÓ ${enemyStages[recruitIndex].weapon}. NYU ENCONTRÓ UNA PLANTA VERDE 🐱.`);
+        updateUI();
+    }
+});
+
+document.getElementById('btn-boss').addEventListener('click', () => {
+    initAudio();
+    const stage = enemyStages[enemyStage];
+    if (!stage || isVictory) return;
+    if (playerHealth < 100 && !currentEnemyEngaged) {
+        showLog('NO PUEDES ENFRENTAR AL SIGUIENTE ENEMIGO HASTA RECUPERAR 100 DE SALUD. REVISA MASCOTAS 🐾.');
+        return;
+    }
+    if (friendsUnlocked <= enemyStage || !weaponsUnlocked.has(enemyStage)) {
+        showLog(`NECESITAS RECLUTAR AL SIGUIENTE ALIADO Y DESBLOQUEAR ${stage.weapon} PARA ABRIR ${stage.door}.`);
+        return;
+    }
+    if (stage.ammoRemaining <= 0) {
+        showLog(`SIN MUNICIÓN PARA ${stage.weapon}. ESTE ARMA SOLO TIENE LA CARGA ENTREGADA POR SU ALIADO.`);
+        updateUI();
+        return;
+    }
+
+    currentEnemyEngaged = true;
+    stage.ammoRemaining--;
+    const damage = stage.damage;
+    enemyHealth -= damage;
+    playSound(100, 'sawtooth', 0.4);
+
+    if (enemyHealth <= 0) {
+        enemyHealth = 0;
+        defeatedEnemies.add(enemyStage);
+        healingSprays++;
+        currentEnemyEngaged = false;
+        showLog(`¡${stage.enemy} DERROTADO! AGOTASTE LA MUNICIÓN DE ${stage.weapon}. KISEKI ENCONTRÓ UN SPRAY. RECUPERA 100 DE SALUD Y USA ${stage.key} PARA ABRIR ${stage.door}.`);
+    } else {
+        const retaliation = 8 + (enemyStage * 2);
+        playerHealth = Math.max(1, playerHealth - retaliation);
+        showLog(`¡${stage.weapon} IMPACTÓ! ${stage.enemy} SUFRIÓ ${damage} DE DAÑO. MUNICIÓN: ${stage.ammoRemaining}/${stage.ammo}. CONTRAATAQUE: -${retaliation} SALUD.`);
+    }
+    updateUI();
+});
+
+window.onload = () => document.getElementById('btn-start-mission').focus();
+</script>
+</body>
+</html>
